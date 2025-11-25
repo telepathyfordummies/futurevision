@@ -37,34 +37,38 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: inline-block;
+  display: none;
   width: 480px;
-  padding: 20px;
-  text-align: center;
   cursor: pointer;
+  text-align: center;
+  flex-direction: column;
 }
 
-/* Scroll image stretches with container */
-#scrollImage {
-  width: 100%;
-  height: 100%;
-  object-fit: fill; /* stretches to container height */
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0; /* behind text */
+/* Top of scroll */
+.scroll-top {
+  height: 80px;
+  background: url('scroll-top.png') no-repeat center top / contain;
 }
 
-/* Text on top of scroll */
+/* Middle stretchable part */
+.scroll-middle {
+  background: url('scroll-middle.png') repeat-y center top / contain;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Bottom of scroll */
+.scroll-bottom {
+  height: 80px;
+  background: url('scroll-bottom.png') no-repeat center bottom / contain;
+}
+
+/* Text inside scroll */
 #scrollText {
-  position: relative;
-  z-index: 1;
   font-size: 26px;
   font-weight: bold;
   color: black;
   text-shadow: 2px 2px 0 #c3b39a;
-  padding: 40px 20px;
-  box-sizing: border-box;
   word-wrap: break-word;
 }
 </style>
@@ -79,8 +83,11 @@ body {
 
   <!-- Scroll popup -->
   <div id="scrollPopup">
-    <img id="scrollImage" src="scroll.png" alt="scroll">
-    <div id="scrollText"></div>
+    <div class="scroll-top"></div>
+    <div class="scroll-middle">
+      <div id="scrollText"></div>
+    </div>
+    <div class="scroll-bottom"></div>
   </div>
 </div>
 
@@ -108,6 +115,7 @@ const spoilers = [
   "horse2.png"
 ];
 
+// Click machine to show random scroll
 document.getElementById("machine").addEventListener("click", () => {
   const pick = spoilers[Math.floor(Math.random() * spoilers.length)];
   showScroll(pick);
@@ -117,16 +125,15 @@ function showScroll(text) {
   const popup = document.getElementById("scrollPopup");
   const t = document.getElementById("scrollText");
 
-  // Display images if spoiler is an image
+  // Show image spoilers if present
   if (text.endsWith(".png") || text.endsWith(".jpg")) {
     t.innerHTML = `<img src="${text}" style="max-width:200px;">`;
   } else {
     t.textContent = text;
   }
 
-  // Dynamically resize scroll container based on text height
-  popup.style.display = "inline-block";
-  popup.style.height = t.offsetHeight + 80 + "px"; // text height + padding
+  // Display scroll
+  popup.style.display = "flex";
 }
 
 // Close scroll when clicked
@@ -137,4 +144,5 @@ document.getElementById("scrollPopup").addEventListener("click", () => {
 
 </body>
 </html>
+
 
