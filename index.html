@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,17 +13,20 @@ body {
   padding-top:40px;
 }
 
+<!-- SOUND EFFECT -->
+<audio id="scrollSound" src="tick.mp3" preload="auto"></audio>
+
 /* --- MACHINE CONTAINER --- */
 .machine-container {
-  position: relative;
-  width: 600px;
+  position: relative;   /* scroll positions relative to this */
+  width: 600px;         /* larger machine */
   margin: 0 auto;
 }
 
 /* --- MACHINE IMAGE BUTTON --- */
 #machine {
-  width: 100%;
-  height: auto;
+  width: 100%;          /* fills container */
+  height: auto;         /* maintain aspect ratio */
   cursor: pointer;
   transition: transform .1s;
 }
@@ -37,49 +39,31 @@ body {
   position: absolute;            
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
-  opacity: 0;
-
+  transform: translate(-50%, -50%);
   width: 480px;
   min-height: 250px;            
-  max-height: 80%;
-  padding: 40px 20px;
-
+  max-height: 80%;              
+  padding: 40px 20px;            /* smaller horizontal padding if needed */
   background: url("scroll3.png") no-repeat center center / cover;
-
   display: none;                 
   flex-direction: column;       
-  justify-content: center;
-  align-items: center;
+  justify-content: center;       /* center text vertically in the scroll */
+  align-items: center;          /* center text horizontally */
   text-align: center;
-
   color: black;
   font-size: 26px;
   font-weight: bold;
   text-shadow: 2px 2px 0 #c3b39a;
-
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow-y: auto;             
 }
-
-/* Pop-in animation */
-#scrollPopup.pop-in {
-  animation: popIn 0.35s forwards;
-}
-
-@keyframes popIn {
-  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-  60% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
-
 /* --- SCROLL TEXT --- */
 #scrollText {
-  width: 100%;
-  margin: 0;
+  width: 100%;    
+  margin: 0;      /* remove extra margin */
 }
 
-/* Close cursor */
+/* Cursor for closeable scroll */
 #scrollPopup.closeable {
   cursor: pointer;
 }
@@ -88,9 +72,6 @@ body {
 <body>
 
 <h2> </h2>
-
-<!-- SOUND EFFECT -->
-<audio id="scrollSound" src="tick.mp3" preload="auto"></audio>
 
 <!-- MACHINE CONTAINER -->
 <div class="machine-container">
@@ -103,13 +84,6 @@ body {
 </div>
 
 <script>
-
-  //  TOGGLE DAILY LIMIT ON/OFF
-
-const DAILY_LIMIT_ENABLED = false;  // change to true when ready
-
-  // ITEM POOL!
-  
 const spoilers = [
   "Craig really could see it in her eyes then.",
   "Sometimes a story is told nonlinearly.",
@@ -135,34 +109,6 @@ const spoilers = [
   "horse2.png"
 ];
 
-
-// DAILY LIMIT FUNCTIONS
-function canSpin() {
-  if (!DAILY_LIMIT_ENABLED) return true;   // unlimited while testing
-
-  const last = localStorage.getItem("lastSpin");
-  const today = new Date().toISOString().slice(0, 10);
-  return last !== today;
-}
-
-function setSpinDate() {
-  if (!DAILY_LIMIT_ENABLED) return;  // do nothing if disabled
-
-  const today = new Date().toISOString().slice(0, 10);
-  localStorage.setItem("lastSpin", today);
-}
-
-
-// MAIN CLICK HANDLER
-document.getElementById("machine").addEventListener("click", () => {
-
-  if (!canSpin()) {
-    showScroll("You've already spun today!");
-    return;
-  }
-
-  setSpinDate();
-  
 document.getElementById("machine").addEventListener("click", () => {
   const pick = spoilers[Math.floor(Math.random() * spoilers.length)];
   showScroll(pick);
@@ -171,39 +117,21 @@ document.getElementById("machine").addEventListener("click", () => {
 function showScroll(text) {
   const popup = document.getElementById("scrollPopup");
   const t = document.getElementById("scrollText");
-  const sound = document.getElementById("scrollSound");
 
-  // Show text or image
+  // if the text is an image, display the image
   if (text.endsWith(".png") || text.endsWith(".jpg")) {
     t.innerHTML = `<img src="${text}" style="max-width:200px;">`;
   } else {
     t.textContent = text;
   }
 
-  // Reset and play sound
-  sound.currentTime = 0;
-  sound.play();
-
-  // stop after 150ms (change to whatever timing you want)
-setTimeout(() => {
-  sound.pause();
-  sound.currentTime = 0;
-}, 150);
-  
-  // Show scroll & animate
   popup.style.display = "flex";
   popup.classList.add("closeable");
-
-  // Restart animation cleanly
-  popup.classList.remove("pop-in");
-  void popup.offsetWidth; // forces reflow so animation can replay
-  popup.classList.add("pop-in");
 }
 
-// Close scroll
+// Close scroll when clicked
 document.getElementById("scrollPopup").addEventListener("click", () => {
-  const popup = document.getElementById("scrollPopup");
-  popup.style.display = "none";
+  document.getElementById("scrollPopup").style.display = "none";
 });
 </script>
 
