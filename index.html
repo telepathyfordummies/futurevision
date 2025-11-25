@@ -1,60 +1,69 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title> </title>
+
 <style>
 body {
-  background: #1a1a1a;
+  background:#1a1a1a;
+  color:#e9e2d0;
   font-family: monospace;
-  color: #e9e2d0;
-  text-align: center;
-  padding-top: 40px;
+  text-align:center;
+  padding-top:40px;
 }
 
+/* --- MACHINE CONTAINER --- */
 .machine-container {
-  position: relative;
-  width: 600px;
+  position: relative;   /* scroll positions relative to this */
+  width: 600px;         /* larger machine */
   margin: 0 auto;
 }
 
+/* --- MACHINE IMAGE BUTTON --- */
 #machine {
-  width: 100%;
+  width: 100%;          /* fills container */
+  height: auto;         /* maintain aspect ratio */
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: transform .1s;
 }
-#machine:active { transform: scale(0.95); }
+#machine:active {
+  transform: scale(0.95);
+}
 
+/* --- POPUP SCROLL --- */
 #scrollPopup {
-  position: absolute;
+  position: absolute;            
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: none;
-  cursor: pointer;
-  flex-direction: column;
   width: 480px;
-}
-
-/* Scroll top and bottom PNG decorations */
-.scroll-top { height: 80px; background: url('scroll-top.png') no-repeat center top / contain; }
-.scroll-bottom { height: 80px; background: url('scroll-bottom.png') no-repeat center bottom / contain; }
-
-/* Scroll middle container */
-.scroll-middle {
-  position: relative;
-}
-
-/* Text overlay */
-#scrollText {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  right: 20px;
+  min-height: 250px;            
+  max-height: 80%;              
+  padding: 40px 20px;            /* smaller horizontal padding if needed */
+  background: url("scroll.png") no-repeat center center / cover;
+  display: none;                 
+  flex-direction: column;       
+  justify-content: center;       /* center text vertically in the scroll */
+  align-items: center;          /* center text horizontally */
+  text-align: center;
   color: black;
   font-size: 26px;
   font-weight: bold;
   text-shadow: 2px 2px 0 #c3b39a;
+  box-sizing: border-box;
+  overflow-y: auto;             
+}
+/* --- SCROLL TEXT --- */
+#scrollText {
+  width: 100%;    
+  margin: 0;      /* remove extra margin */
+}
+
+/* Cursor for closeable scroll */
+#scrollPopup.closeable {
+  cursor: pointer;
 }
 </style>
 </head>
@@ -62,21 +71,13 @@ body {
 
 <h2> </h2>
 
+<!-- MACHINE CONTAINER -->
 <div class="machine-container">
   <img id="machine" src="machine.png" alt="machine">
 
+  <!-- SCROLL POPUP -->
   <div id="scrollPopup">
-    <div class="scroll-top"></div>
-    <div class="scroll-middle">
-      <!-- Your middle scroll SVG -->
-      <svg id="middleSVG" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
-        <!-- Paste your full SVG paths here -->
-        <path fill="#000000" d="..."/>
-        <!-- ... rest of your SVG paths ... -->
-      </svg>
-      <div id="scrollText"></div>
-    </div>
-    <div class="scroll-bottom"></div>
+    <div id="scrollText"></div>
   </div>
 </div>
 
@@ -104,28 +105,31 @@ const spoilers = [
   "horse2.png"
 ];
 
-const machine = document.getElementById("machine");
-const popup = document.getElementById("scrollPopup");
-const textDiv = document.getElementById("scrollText");
-const svg = document.getElementById("middleSVG");
-
-machine.addEventListener("click", () => {
+document.getElementById("machine").addEventListener("click", () => {
   const pick = spoilers[Math.floor(Math.random() * spoilers.length)];
-  textDiv.textContent = pick;
-
-  // Wait for browser to render text to measure height
-  requestAnimationFrame(() => {
-    const textHeight = textDiv.offsetHeight + 40; // padding
-    svg.setAttribute("height", textHeight); // dynamically resize SVG
-    popup.style.display = "flex";
-  });
+  showScroll(pick);
 });
 
-popup.addEventListener("click", () => {
-  popup.style.display = "none";
+function showScroll(text) {
+  const popup = document.getElementById("scrollPopup");
+  const t = document.getElementById("scrollText");
+
+  // if the text is an image, display the image
+  if (text.endsWith(".png") || text.endsWith(".jpg")) {
+    t.innerHTML = `<img src="${text}" style="max-width:200px;">`;
+  } else {
+    t.textContent = text;
+  }
+
+  popup.style.display = "flex";
+  popup.classList.add("closeable");
+}
+
+// Close scroll when clicked
+document.getElementById("scrollPopup").addEventListener("click", () => {
+  document.getElementById("scrollPopup").style.display = "none";
 });
 </script>
 
 </body>
 </html>
-
