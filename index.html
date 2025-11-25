@@ -39,12 +39,12 @@ body {
   transform: translate(-50%, -50%);
   width: 480px;
   min-height: 250px;            
-  max-height: 80%;              /* prevent scroll from going offscreen */
-  padding: 40px;
-  background: url("scroll.png") no-repeat center top / 100% auto;
+  max-height: 80%;              
+  padding: 40px 20px;            /* smaller horizontal padding if needed */
+  background: url("scroll.png") no-repeat center center / cover;
   display: none;                 
-  flex-direction: column;       /* stack content vertically */
-  justify-content: flex-start;  
+  flex-direction: column;       
+  justify-content: center;       /* center text vertically in the scroll */
   align-items: center;          /* center text horizontally */
   text-align: center;
   color: black;
@@ -52,7 +52,7 @@ body {
   font-weight: bold;
   text-shadow: 2px 2px 0 #c3b39a;
   box-sizing: border-box;
-  overflow-y: auto;             /* allow scrolling if text is long */
+  overflow-y: auto;             
 }
 
 /* --- SCROLL TEXT --- */
