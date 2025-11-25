@@ -107,9 +107,9 @@ function setSpinDate() {
 // MAIN MACHINE CLICK
 document.getElementById("machine").addEventListener("click", () => {
 
-// if (!canSpin()) {
-  // showScroll("You've already spun today!");
-    //return;
+if (!canSpin()) {
+  showScroll("You've already spun today!");
+    return;
   }
 
   // pick random result
