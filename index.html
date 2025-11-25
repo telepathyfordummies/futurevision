@@ -2,8 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title> </title>
-
+<title>Machine Scroll Demo</title>
 <style>
 body {
   background: #1a1a1a;
@@ -13,14 +12,12 @@ body {
   padding-top: 40px;
 }
 
-/* --- MACHINE CONTAINER --- */
 .machine-container {
   position: relative;
   width: 600px;
   margin: 0 auto;
 }
 
-/* --- MACHINE IMAGE BUTTON --- */
 #machine {
   width: 100%;
   height: auto;
@@ -31,7 +28,6 @@ body {
   transform: scale(0.95);
 }
 
-/* --- POPUP SCROLL --- */
 #scrollPopup {
   position: absolute;
   top: 50%;
@@ -44,20 +40,17 @@ body {
   flex-direction: column;
 }
 
-/* Scroll top */
 .scroll-top {
   height: 80px;
   background: url('scroll-top.png') no-repeat center top / contain;
 }
 
-/* Scroll middle (stretchable) */
 .scroll-middle {
-  background: url('scroll-middle.png') repeat-y center top / contain;
+  background: url('scroll-middle.png') no-repeat center top / 100% 100%;
   padding: 20px;
   box-sizing: border-box;
 }
 
-/* Text inside scroll */
 #scrollText {
   font-size: 26px;
   font-weight: bold;
@@ -66,7 +59,6 @@ body {
   word-wrap: break-word;
 }
 
-/* Scroll bottom */
 .scroll-bottom {
   height: 80px;
   background: url('scroll-bottom.png') no-repeat center bottom / contain;
@@ -75,13 +67,11 @@ body {
 </head>
 <body>
 
-<h2> </h2>
+<h2>Machine Scroll Demo</h2>
 
 <div class="machine-container">
-  <!-- Clickable machine -->
   <img id="machine" src="machine.png" alt="machine">
 
-  <!-- Scroll popup -->
   <div id="scrollPopup">
     <div class="scroll-top"></div>
     <div class="scroll-middle">
@@ -124,7 +114,6 @@ function showScroll(text) {
   const popup = document.getElementById("scrollPopup");
   const t = document.getElementById("scrollText");
 
-  // Display image spoilers if present
   if (text.endsWith(".png") || text.endsWith(".jpg")) {
     t.innerHTML = `<img src="${text}" style="max-width:200px;">`;
   } else {
@@ -134,12 +123,10 @@ function showScroll(text) {
   popup.style.display = "flex";
 }
 
-// Close scroll when clicked
 document.getElementById("scrollPopup").addEventListener("click", () => {
   document.getElementById("scrollPopup").style.display = "none";
 });
 </script>
-
 </body>
 </html>
 
