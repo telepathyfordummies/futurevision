@@ -16,7 +16,7 @@ body {
 /* --- MACHINE CONTAINER --- */
 .machine-container {
   position: relative;   /* scroll positions relative to this */
-  width: 600px;         /* make machine bigger */
+  width: 600px;         /* larger machine */
   margin: 0 auto;
 }
 
@@ -33,30 +33,32 @@ body {
 
 /* --- POPUP SCROLL --- */
 #scrollPopup {
-  position: absolute;            /* relative to container */
+  position: absolute;            
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 480px;
-  min-height: 250px;            /* starting height */
-  height: auto;                  /* expands with text */
+  min-height: 250px;            
+  max-height: 80%;              /* prevent scroll from going offscreen */
   padding: 40px;
   background: url("scroll.png") no-repeat center top / 100% auto;
-  display: none;                 /* show when needed */
-  justify-content: flex-start;   /* align text to top */
-  align-items: flex-start;
+  display: none;                 
+  flex-direction: column;       /* stack content vertically */
+  justify-content: flex-start;  
+  align-items: center;          /* center text horizontally */
   text-align: center;
   color: black;
   font-size: 26px;
   font-weight: bold;
   text-shadow: 2px 2px 0 #c3b39a;
   box-sizing: border-box;
+  overflow-y: auto;             /* allow scrolling if text is long */
 }
 
-/* Text inside scroll */
+/* --- SCROLL TEXT --- */
 #scrollText {
-  width: 100%;    /* fill scroll width */
-  margin-top: 0;  /* remove extra margin */
+  width: 100%;    
+  margin: 0;      /* remove extra margin */
 }
 
 /* Cursor for closeable scroll */
@@ -112,8 +114,9 @@ function showScroll(text) {
   const popup = document.getElementById("scrollPopup");
   const t = document.getElementById("scrollText");
 
+  // if the text is an image, display the image
   if (text.endsWith(".png") || text.endsWith(".jpg")) {
-    t.innerHTML = `<img src="${text}" style="width:200px;">`;
+    t.innerHTML = `<img src="${text}" style="max-width:200px;">`;
   } else {
     t.textContent = text;
   }
@@ -122,7 +125,7 @@ function showScroll(text) {
   popup.classList.add("closeable");
 }
 
-// Close scroll on click
+// Close scroll when clicked
 document.getElementById("scrollPopup").addEventListener("click", () => {
   document.getElementById("scrollPopup").style.display = "none";
 });
@@ -130,4 +133,3 @@ document.getElementById("scrollPopup").addEventListener("click", () => {
 
 </body>
 </html>
-
