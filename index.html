@@ -13,20 +13,17 @@ body {
   padding-top:40px;
 }
 
-<!-- SOUND EFFECT -->
-<audio id="scrollSound" src="tick.mp3" preload="auto"></audio>
-
 /* --- MACHINE CONTAINER --- */
 .machine-container {
-  position: relative;   /* scroll positions relative to this */
-  width: 600px;         /* larger machine */
+  position: relative;
+  width: 600px;
   margin: 0 auto;
 }
 
 /* --- MACHINE IMAGE BUTTON --- */
 #machine {
-  width: 100%;          /* fills container */
-  height: auto;         /* maintain aspect ratio */
+  width: 100%;
+  height: auto;
   cursor: pointer;
   transition: transform .1s;
 }
@@ -39,31 +36,49 @@ body {
   position: absolute;            
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+
   width: 480px;
   min-height: 250px;            
-  max-height: 80%;              
-  padding: 40px 20px;            /* smaller horizontal padding if needed */
+  max-height: 80%;
+  padding: 40px 20px;
+
   background: url("scroll3.png") no-repeat center center / cover;
+
   display: none;                 
   flex-direction: column;       
-  justify-content: center;       /* center text vertically in the scroll */
-  align-items: center;          /* center text horizontally */
+  justify-content: center;
+  align-items: center;
   text-align: center;
+
   color: black;
   font-size: 26px;
   font-weight: bold;
   text-shadow: 2px 2px 0 #c3b39a;
+
   box-sizing: border-box;
-  overflow-y: auto;             
-}
-/* --- SCROLL TEXT --- */
-#scrollText {
-  width: 100%;    
-  margin: 0;      /* remove extra margin */
+  overflow-y: auto;
 }
 
-/* Cursor for closeable scroll */
+/* Pop-in animation */
+#scrollPopup.pop-in {
+  animation: popIn 0.35s forwards;
+}
+
+@keyframes popIn {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+  60% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* --- SCROLL TEXT --- */
+#scrollText {
+  width: 100%;
+  margin: 0;
+}
+
+/* Close cursor */
 #scrollPopup.closeable {
   cursor: pointer;
 }
@@ -72,6 +87,9 @@ body {
 <body>
 
 <h2> </h2>
+
+<!-- SOUND EFFECT -->
+<audio id="scrollSound" src="tick.mp3" preload="auto"></audio>
 
 <!-- MACHINE CONTAINER -->
 <div class="machine-container">
@@ -117,21 +135,33 @@ document.getElementById("machine").addEventListener("click", () => {
 function showScroll(text) {
   const popup = document.getElementById("scrollPopup");
   const t = document.getElementById("scrollText");
+  const sound = document.getElementById("scrollSound");
 
-  // if the text is an image, display the image
+  // Show text or image
   if (text.endsWith(".png") || text.endsWith(".jpg")) {
     t.innerHTML = `<img src="${text}" style="max-width:200px;">`;
   } else {
     t.textContent = text;
   }
 
+  // Reset and play sound
+  sound.currentTime = 0;
+  sound.play();
+
+  // Show scroll & animate
   popup.style.display = "flex";
   popup.classList.add("closeable");
+
+  // Restart animation cleanly
+  popup.classList.remove("pop-in");
+  void popup.offsetWidth; // forces reflow so animation can replay
+  popup.classList.add("pop-in");
 }
 
-// Close scroll when clicked
+// Close scroll
 document.getElementById("scrollPopup").addEventListener("click", () => {
-  document.getElementById("scrollPopup").style.display = "none";
+  const popup = document.getElementById("scrollPopup");
+  popup.style.display = "none";
 });
 </script>
 
