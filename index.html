@@ -149,6 +149,12 @@ function showScroll(text) {
   sound.currentTime = 0;
   sound.play();
 
+  // stop after 150ms (change to whatever timing you want)
+setTimeout(() => {
+  sound.pause();
+  sound.currentTime = 0;
+}, 150);
+  
   // Show scroll & animate
   popup.style.display = "flex";
   popup.classList.add("closeable");
