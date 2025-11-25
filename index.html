@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Machine Scroll SVG Demo</title>
+<title> </title>
 <style>
 body {
   background: #1a1a1a;
-  color: #e9e2d0;
   font-family: monospace;
+  color: #e9e2d0;
   text-align: center;
   padding-top: 40px;
 }
@@ -20,15 +20,11 @@ body {
 
 #machine {
   width: 100%;
-  height: auto;
   cursor: pointer;
   transition: transform 0.1s;
 }
-#machine:active {
-  transform: scale(0.95);
-}
+#machine:active { transform: scale(0.95); }
 
-/* --- SCROLL POPUP --- */
 #scrollPopup {
   position: absolute;
   top: 50%;
@@ -37,64 +33,35 @@ body {
   display: none;
   width: 480px;
   cursor: pointer;
-  text-align: center;
   flex-direction: column;
 }
 
-/* Scroll top */
-.scroll-top {
-  height: 80px;
-  background: url('scroll-top.png') no-repeat center top / contain;
-}
-
-/* Scroll middle container */
+/* Scroll parts */
+.scroll-top { height: 80px; background: url('scroll-top.png') no-repeat center top / contain; }
 .scroll-middle {
-  position: relative;
-}
-
-/* Stretchable middle SVG */
-.scroll-middle svg {
-  width: 100%;
-  height: 100%; /* container height will match text */
-  display: block;
-}
-
-/* Text inside scroll */
-#scrollText {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  background: url('scroll-middle.png') repeat-y center top;
   padding: 20px;
+  box-sizing: border-box;
+}
+.scroll-bottom { height: 80px; background: url('scroll-bottom.png') no-repeat center bottom / contain; }
+
+#scrollText {
   font-size: 26px;
   font-weight: bold;
   color: black;
   text-shadow: 2px 2px 0 #c3b39a;
   word-wrap: break-word;
-  z-index: 1;
-}
-
-/* Scroll bottom */
-.scroll-bottom {
-  height: 80px;
-  background: url('scroll-bottom.png') no-repeat center bottom / contain;
 }
 </style>
 </head>
 <body>
 
-<h2>Machine Scroll SVG Demo</h2>
-
+<h2>Dynamic Scroll Demo</h2>
 <div class="machine-container">
   <img id="machine" src="machine.png" alt="machine">
-
   <div id="scrollPopup">
     <div class="scroll-top"></div>
     <div class="scroll-middle">
-      <!-- Use your uploaded SVG here -->
-      <svg id="middleSVG" viewBox="0 0 480 100" preserveAspectRatio="none">
-        <rect width="480" height="100" fill="#f5f0e1" />
-      </svg>
       <div id="scrollText"></div>
     </div>
     <div class="scroll-bottom"></div>
@@ -103,60 +70,22 @@ body {
 
 <script>
 const spoilers = [
-  "Craig really could see it in her eyes then.",
-  "Sometimes a story is told nonlinearly.",
-  "Declarations of love can ruin things even if the love is reciprocated.",
-  "If you eat something, sometimes you can absorb its power.",
-  "Someone is always watching.",
-  "Anything is a weapon if you're stupid enough.",
-  "Connections terrify those without any.",
-  "Natural laws cannot be erased.",
-  "...",
-  "Even people you should always listen to can be wrong sometimes.",
-  "M0DS R D3AD",
-  "There is always more to this story.",
-  "THE RAT KNOWS TOO MUCH.",
-  "Hello World is used exactly twice within this story.",
-  "Nightmares are often the source of déjà rêvé.",
-  "WHO IS ELIAS?",
-  "WHO ARE YOU?",
-  "???",
-  "horse1.png",
-  "horse2.png"
+  "Short text.",
+  "This is a longer piece of text that will make the scroll expand naturally and show how the middle section tiles correctly.",
+  "Even longer text to really demonstrate the scroll expanding dynamically while keeping top and bottom aligned perfectly."
 ];
 
 document.getElementById("machine").addEventListener("click", () => {
   const pick = spoilers[Math.floor(Math.random() * spoilers.length)];
-  showScroll(pick);
+  const popup = document.getElementById("scrollPopup");
+  document.getElementById("scrollText").textContent = pick;
+  popup.style.display = 'flex';
 });
 
-function showScroll(text) {
-  const popup = document.getElementById("scrollPopup");
-  const t = document.getElementById("scrollText");
-  const svg = document.getElementById("middleSVG");
-
-  // Add text
-  if (text.endsWith(".png") || text.endsWith(".jpg")) {
-    t.innerHTML = `<img src="${text}" style="max-width:200px;">`;
-  } else {
-    t.textContent = text;
-  }
-
-  // Resize SVG height to match text
-  requestAnimationFrame(() => {
-    svg.setAttribute('height', t.offsetHeight + 40); // text height + padding
-  });
-
-  popup.style.display = "flex";
-}
-
-// Close scroll when clicked
 document.getElementById("scrollPopup").addEventListener("click", () => {
-  document.getElementById("scrollPopup").style.display = "none";
+  document.getElementById("scrollPopup").style.display = 'none';
 });
 </script>
-
 </body>
 </html>
-
 
