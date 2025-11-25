@@ -124,9 +124,16 @@ function showScroll(text) {
   const popup = document.getElementById("scrollPopup");
   const t = document.getElementById("scrollText");
 
-  t.textContent = text;
+  // If result is an image
+  if (text.endsWith(".png") || text.endsWith(".jpg") || text.endsWith(".jpeg")) {
+    t.innerHTML = `<img src="${text}" style="width:200px;">`;
+  } else {
+    t.textContent = text;
+  }
+
   popup.style.display = "flex";
   popup.classList.add("closeable");
+}
 }
 
 document.getElementById("scrollPopup").addEventListener("click", () => {
