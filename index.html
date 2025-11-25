@@ -48,7 +48,6 @@ body {
   margin-top: 40px;
 }
 
-/* Click anywhere to close */
 #scrollPopup.closeable {
   cursor: pointer;
 }
@@ -67,7 +66,6 @@ body {
 </div>
 
 <script>
-// Your pool of spoilers
 const spoilers = [
   "Craig really could see it in her eyes then.",
   "Sometimes a story is told nonlinearly.",
@@ -82,7 +80,6 @@ const spoilers = [
   "M0DS R D3AD",
   "There is always more to this story.",
   "THE RAT KNOWS TOO MUCH.",
-  "Attention: If you or a loved one has been diagnosed with Mesothelioma...",
   "Hello World is used exactly twice within this story.",
   "Nightmares are often the source of déjà rêvé.",
   "WHO IS ELIAS?",
@@ -92,36 +89,20 @@ const spoilers = [
   "horse2.png"
 ];
 
-// LocalStorage daily limit
-function canSpin() {
-  const last = localStorage.getItem("lastSpin");
-  const today = new Date().toISOString().slice(0, 10);
-  return last !== today;
-}
+// localStorage OFF while testing
+function canSpin() { return true; }
+function setSpinDate() {}
 
-function setSpinDate() {
-  const today = new Date().toISOString().slice(0, 10);
-  localStorage.setItem("lastSpin", today);
-}
-
-// MAIN MACHINE CLICK
 document.getElementById("machine").addEventListener("click", () => {
-  if (!canSpin()) {
-    showScroll("You've already spun today!");
-    return;
-  }
-
   const pick = spoilers[Math.floor(Math.random() * spoilers.length)];
-  setSpinDate();
   showScroll(pick);
 });
 
-// POPUP LOGIC
 function showScroll(text) {
   const popup = document.getElementById("scrollPopup");
   const t = document.getElementById("scrollText");
 
-  if (text.endsWith(".png") || text.endsWith(".jpg") || text.endsWith(".jpeg")) {
+  if (text.endsWith(".png") || text.endsWith(".jpg")) {
     t.innerHTML = `<img src="${text}" style="width:200px;">`;
   } else {
     t.textContent = text;
@@ -131,4 +112,10 @@ function showScroll(text) {
   popup.classList.add("closeable");
 }
 
-document.getElementById("scrollPopup").addEventListener
+document.getElementById("scrollPopup").addEventListener("click", () => {
+  document.getElementById("scrollPopup").style.display = "none";
+});
+</script>
+
+</body>
+</html>
